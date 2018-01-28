@@ -1,0 +1,57 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_open.3,v 1.1.1.1 1999/09/30 04:45:51 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_OPEN 1 \*(Dt TYPHOON
+.SH NAME
+d_open \- open a database
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_open(char *\fPdbname\fB, char *\fPmode\fB)
+.SH DESCRIPTION
+\fBd_open\fP opens a database in either shared or exclusive mode.
+If the database does not already exist it is created without warning.
+The dbd-file must be placed in the path specified by d_dbdpath(1) and 
+the database files must be placed in the path specified by d_dbfpath(1).
+\fIdbname\fP is the name of the dbd-file without extension.
+\fImode\fP is "s" or "x" for shared and exclusive mode, respectively.
+
+If \fBd_open\fP returns \fBS_OKAY\fP the database becomes the current
+database.
+
+If the database has already been opened by another process in exclusive
+mode, d_open returns S_UNAVAIL.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+Database opened successfully.
+.TP
+.B S_NOMEM
+Out of memory.
+.TP
+.B S_INVDB
+Invalid database name.
+.TP
+.B S_IOFATAL
+Fatal file i/o error.
+.TP
+.B S_NOTAVAIL
+The database has been opened in exclusive mode by another process.
+.SH CURRENCY CHANGES
+The opened database becomes the current database.
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_dbdpath(1), d_dbfpath(1), d_setfiles(1), d_close(1), d_destroy(1), d_dbget(1).
+

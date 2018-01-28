@@ -1,0 +1,45 @@
+The Typhoon RDBMS has been compiled and tested on the following platforms:
+
+	IBM RS/6000 running AIX
+	386/486 running Linux 0.99,1.72
+	386/486 running OS/2 2.0, 2.1, 2.99
+	386/486 running SCO UNIX SVR3.2 Version 4.2
+	Sun Solaris 2.3, 2.4
+	Tandem S2 running NonStop Unix SVR4 B.22
+
+The library has been compiled on the following platforms:
+
+	UnixWare
+	HP-UX 9.01
+	Digital OSF/1 AXP
+	SunOS 4.1.3
+	Data General AViiON running DG/UX 5.4.2
+	SGI
+
+-------------------------------------------------------------------------------
+
+Installation:
+
+Type 'configure' in the typhoon directory and then 'make'.  The output from
+the compilation consists of the following files.
+
+    ./include/typhoon.h
+    ./include/ansi.h
+    ./src/libtyphoon.a
+    ./util/ddlp
+    ./util/dbdview
+    ./util/tyexport
+    ./util/tyimport
+    ./man/...
+
+If you are installing under OS/2 you must rename the file include/env_os2.h
+to include/environ.h before making. To make enter the following:
+
+	cd src
+	nmake -f makefile.os2
+	cd ../util
+	nmake -f makefile.os2
+	cd ../examples
+	nmake -f makefile.os2
+
+Remember to place typhoon.dll in a directory that is in LIBPATH.

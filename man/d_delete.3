@@ -1,0 +1,60 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_delete.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_DELETE 1 \*(Dt TYPHOON
+.SH NAME
+d_delete \- delete the current record
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_delete()
+.SH DESCRIPTION
+\fBd_delete\fP removes the current record from its table.
+.br
+If there is no current record, \fBS_NOCR\fP is returned.
+If the record has references, i.e. records with foreign keys that reference
+this record, \fBS_RESTRICT\fP is returned.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+The record was successfully deleted.
+.TP
+.B S_NOCD
+There is no current database.
+.TP
+.B S_NOCR
+There is no current record.
+.TP
+.B S_RESTRICT
+One or more records currently reference this record and the record cannot
+be deleted.
+.SH CURRENCY CHANGES
+None.
+.SH EXAMPLE
+#include <typhoon.h>
+.br
+
+if( d_keyfind(CUSTOMER_NAME, "Pedersen") == S_OKAY )
+.br
+{
+.br
+	if( d_delete() != S_OKAY )
+.br
+		/* handle error */
+.br
+}
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_fillnew(1)

@@ -1,0 +1,21 @@
+Release 1.11.0 (Sun Oct 3 1999)
+
+    1. Cleanup release based on 1.10.3. (See ``ChangeLog''). Many, many
+       problems were fixed:
+       - use of implicit int in declarations;
+       - undeclared functions being called---many headers added;
+       - parameters not being converted to the correct type
+         if compiling without ANSI C prototypes;
+       - broken configure script not making correct decisions---for example
+         disabling prototypes even though GCC is being used;
+       - preference given to GNU tools, like bison over yacc;
+       - tools falling out of main() without returning exit status;
+       - use of invalid void main() construct;
+       - mismatched types in printf() calls;
+    2. Fixed bug in tyexport and tyimport programs caused by
+       calling fclose on the wrong FILE * pointer. These tools were
+       totally broken because of this and wouldn't export or import; 
+       they would crash after parsing the import or export spec.
+    3. Added support for POSIX fcntl() locking, which is used in
+       preference to lockf(). The lockf() emulation on Linux using flock()
+       is gone.

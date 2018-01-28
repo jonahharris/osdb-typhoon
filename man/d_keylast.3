@@ -1,0 +1,78 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_keylast.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_KEYLAST 1 \*(Dt TYPHOON
+.SH NAME
+d_keylast \- find the last key value in an index
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_keylast(ulong \fPkeyid\fB)
+.SH DESCRIPTION
+\fBd_keyfrst\fP finds the last key value in the index specified by
+\fIkeyid\fP. If \fBd_keyfrst\fP returns \fBS_NOTFOUND\fP the index is empty.
+.br
+
+The id can be either the id of a compound key, or a field that is a key
+by itself.
+.br
+
+The actual record is not read from the database until \fBd_recread(1)\fP is
+called.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+The key value was found.
+.TP
+.B S_NOTFOUND
+The key value was not found, i.e. the index is empty.
+.TP
+.B S_NOCD
+There is no current database.
+.TP
+.B S_INVFLD
+The id is not a valid field.
+.TP
+.B S_NOTKEY
+The field id is not a key itself.
+.SH CURRENCY CHANGES
+If \fBS_OKAY\fP is returned, the record found becomes the current record.
+.SH EXAMPLE
+/* Traverse the customers in alphabetical, descending order */
+
+#include <typhoon.h>
+.br
+
+d_keylast(CUSTOMER_NAME);
+.br
+
+while( db_status == S_OKAY )
+.br
+{
+.br
+	struct customer cust;
+.br
+
+	d_recread(&cust);
+.br
+	printf("%s\\n", cust.name);
+.br
+	d_keyprev(CUSTOMER_NAME);
+.br
+}
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_keynext(1), d_keyfind(1), d_keyprev(1), d_keylast(1), d_recread(1).
+

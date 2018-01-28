@@ -1,0 +1,19 @@
+LIB_OBJS	= bt_del.obj bt_funcs.obj bt_io.obj bt_open.obj \
+			  cmpfuncs.obj os.obj os2.obj readdbd.obj record.obj \
+			  ty_ins.obj ty_find.obj ty_util.obj ty_auxfn.obj ty_io.obj ty_open.obj ty_refin.obj \
+			  ty_repl.obj vlr.obj
+CFLAGS		= /DOS2 /I..\include
+CC			= icc /OS2 /Tdc /Sp1 /Q /Tx /Fi /Si /Gh /Ti /Gm /Gd /Ge- /G4 /Tm \
+			  /Tl1 $(CFLAGS)
+
+IMPLIB		= \toolkt20\os2bin\implib 
+
+typhoon.dll: $(LIB_OBJS)
+	$(CC) /B"/de /nologo /noe /m:full" /Fe"typhoon.dll" /fm"typhoon.map" \
+	typhoon.def $(LIB_OBJS)
+	$(IMPLIB) typhoon.lib typhoon.dll
+
+.c.obj:
+	$(CC) -c $<
+
+# end-of-file

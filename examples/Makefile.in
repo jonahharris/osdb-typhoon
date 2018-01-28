@@ -1,0 +1,55 @@
+# Makefile for:  demo - typhoon test and demonstration program
+
+DEFINES		= -I../include @defs@
+CC		= @cc@
+CFLAGS		= @cflags@
+LIBS		= -ltyphoon
+PREFIX		= /usr/local
+LDFLAGS		= -L../src
+DESTBIN		= $(PREFIX)/bin
+DESTOWN		= root
+DESTGRP		= local
+SHELL		= /bin/sh
+PROGRAM		= demo
+SRCS		= demo.c
+HDRS		= demo.h
+OBJS		= demo.o
+
+.DEFAULT:
+		co $@
+
+.PHONY:		all lint tags install uninstall clean distclean
+
+all:		$(PROGRAM)
+
+$(PROGRAM):	$(OBJS)
+		$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $(PROGRAM)
+
+demo.h demo.dbd: demo.ddl
+		../util/ddlp -a4 -f demo
+
+lint:
+		lint -u $(DEFINES) $(SRCS)
+
+tags:		$(HDRS) $(SRCS)
+		ctags -w $(HDRS) $(SRCS)
+
+install:	$(PROGRAM)
+		cp $(PROGRAM) $(DESTBIN)
+		-mcs -c $(DESTBIN)/$(PROGRAM)
+		strip $(DESTBIN)/$(PROGRAM)
+		chmod 755 $(DESTBIN)/$(PROGRAM)
+		chown $(DESTOWN) $(DESTBIN)/$(PROGRAM)
+		chgrp $(DESTGRP) $(DESTBIN)/$(PROGRAM)
+
+uninstall:
+		rm -f $(DESTBIN)/$(PROGRAM)
+
+clean:
+		-rm -rf $(PROGRAM) $(OBJS) demo.h demo.dbd data
+
+distclean:	clean
+		-rm -f Makefile tags core a.out
+
+### Do NOT edit this or the following lines.
+demo.o:		demo.h

@@ -1,0 +1,62 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_crread.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_CRREAD 1 \*(Dt TYPHOON
+.SH NAME
+d_crread \- read a field from the current record
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_crread(ulong \fPfieldid\fB, void *\fPbuf\fB)
+.SH DESCRIPTION
+\fBd_crread\fP copies the contents of the field specified by \fIfieldid\fP
+into the buffer \fIbuf\fP. If the field is a variable length field, only
+the actual number of bytes in the field is copied.
+.br
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+Operation successful.
+.TP
+.B S_NOCD
+There is no current database.
+.TP
+.B S_NOCR
+There is no current record.
+.TP
+.B S_INVFLD
+The id is not a valid field.
+.SH CURRENCY CHANGES
+None.
+.SH EXAMPLE
+/* Get Pedersen's account number */
+.br
+
+#include <typhoon.h>
+.br
+
+if( d_keyfind(CUSTOMER_NAME, "Pedersen") == S_OKAY )
+.br
+{
+.br
+    unsigned long account;
+.br
+    d_crread(CUSTOMER_ACCOUNT, &account);
+    printf("Account number %lu\\n", account);
+.br
+}
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_recread(1), d_keyread(1)

@@ -1,0 +1,61 @@
+;----------------------------------------------------------------------------
+; File    : typhoon.def                     Copyright (c) 1991-93, CT Danmark
+; Library : typhoon.dll
+; Compiler: Borland C++ for OS/2
+; OS      : OS/2
+; Author  : Thomas B. Pedersen
+;
+; Description:
+;   This file is a DEF file for the Typhoon DBMS used as a Dynamic Link
+;   Library under OS/2.
+;
+; History
+; ------------------------------
+; 16-Jun-1993 tbp	Initial version.
+; 15-Jul-1993 tbp	DLL has now nonshared data segment.
+;
+;--------------------------------------------------------------------------*/
+
+LIBRARY     TYPHOON INITINSTANCE
+
+DESCRIPTION 'Typhoon Relational Database Management System Library'
+
+PROTMODE
+
+DATA        MULTIPLE READWRITE LOADONCALL NONSHARED
+
+CODE        LOADONCALL
+
+EXPORTS		d_dbdpath		@1
+			d_dbfpath		@2
+			d_dbget			@3
+			d_dbset			@4
+			d_open			@5
+			d_close			@6
+			d_destroy		@7
+			d_keyread		@8
+			d_keyfind		@9
+			d_keyfrst		@10
+			d_keylast		@11
+			d_keynext		@12
+			d_keyprev		@13
+			d_recfrst		@14
+			d_reclast		@15
+			d_recnext		@16
+			d_recprev		@17
+			d_crread		@18
+			d_recwrite		@19
+			d_recread		@20
+			d_fillnew		@21
+			d_delete		@22
+			d_crget			@23
+			d_crset			@24
+			d_records		@25
+			d_block			@26
+			d_unblock		@27
+			d_getkeysize	@28
+			d_setfiles		@29
+			_db_status		@30
+			_db_subcode		@31
+			d_getrecsize	@33
+			d_keybuild	@34

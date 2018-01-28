@@ -1,0 +1,107 @@
+# Makefile for:  util - programs to support typhoon
+
+DEFINES		= -I../include -I../src @defs@
+YACC		= @yacc@
+YFLAGS		= -d
+CC		= @cc@
+CFLAGS		= @cflags@
+LIBS		= -ltyphoon
+PREFIX		= /usr/local
+LDFLAGS		= -L../src
+DESTBIN		= $(PREFIX)/bin
+DESTOWN		= root
+DESTGRP		= local
+SHELL		= /bin/sh
+PROGRAMS	= ddlp dbdview tyexport tyimport # tybackup tyrestore
+MADESRCS	= ddl.c exp.c imp.c ddl.h exp.h imp.h
+SRCS		= backup.c dbdview.c ddl.y ddlp.c ddlplex.c ddlpsym.c exp.y \
+		  export.c exportlx.c expspec.c fixlog.c imp.y import.c \
+		  importlx.c impspec.c restore.c util.c
+HDRS		= ddl.h ddlp.h ddlpglob.h ddlpsym.h exp.h export.h \
+		  imp.h import.h lex.h util.h
+DDLP_OBJS	= ddl.o ddlp.o ddlplex.o ddlpsym.o
+DBDVIEW_OBJS	= dbdview.o
+EXPORT_OBJS	= exp.o export.o exportlx.o expspec.o
+IMPORT_OBJS	= imp.o import.o importlx.o impspec.o
+BACKUP_OBJS	= backup.o util.o ../src/readdbd.o ../src/os.o ../src/unix.o
+RESTORE_OBJS	= restore.o util.o fixlog.o ../src/readdbd.o ../src/os.o \
+		  ../src/unix.o
+
+.DEFAULT:
+		co $@
+
+.PHONY:		all lint tags install uninstall clean distclean
+
+.y.c .y.h:
+		$(YACC) $(YFLAGS) $<
+		mv y.tab.c $*.c
+		-mv y.tab.h $*.h
+
+.y.o:
+		$(YACC) $(YFLAGS) $<
+		-mv y.tab.h $*.h
+		$(CC) -c $(CFLAGS) y.tab.c -o $@
+
+.SUFFIXES:	.y
+
+all:		$(PROGRAMS) $(MADESRCS)
+
+ddlp:		$(DDLP_OBJS)
+		$(CC) $(LDFLAGS) $(DDLP_OBJS) $(LIBS) -o $@
+
+dbdview:	$(DBDVIEW_OBJS)
+		$(CC) $(LDFLAGS) $(DBDVIEW_OBJS) $(LIBS) -o $@
+
+tyexport:	$(EXPORT_OBJS)
+		$(CC) $(LDFLAGS) $(EXPORT_OBJS) $(LIBS) -o $@
+
+tyimport:	$(IMPORT_OBJS)
+		$(CC) $(LDFLAGS) $(IMPORT_OBJS) $(LIBS) -o $@
+
+tybackup:	$(BACKUP_OBJS)
+		$(CC) $(LDFLAGS) $(BACKUP_OBJS) $(LIBS) -o $@
+
+tyrestore:	$(RESTORE_OBJS)
+		$(CC) $(LDFLAGS) $(RESTORE_OBJS) $(LIBS) -o $@
+
+lint:
+		lint -u $(DEFINES) $(SRCS)
+
+tags:		$(HDRS) $(SRCS)
+		ctags -w $(HDRS) $(SRCS)
+
+install:	$(PROGRAMS)
+		cp $(PROGRAMS) $(DESTBIN)
+		cd $(DESTBIN) && -mcs -c $(PROGRAMS)
+		cd $(DESTBIN) && strip $(PROGRAMS)
+		cd $(DESTBIN) && chmod 755 $(PROGRAMS)
+		cd $(DESTBIN) && chown $(DESTOWN) $(PROGRAMS)
+		cd $(DESTBIN) && chgrp $(DESTGRP) $(PROGRAMS)
+
+uninstall:
+		cd $(DESTBIN) && rm -f $(PROGRAMS)
+
+clean:
+		-rm -f $(PROGRAMS) $(DDLP_OBJS) $(DBDVIEW_OBJS) $(EXPORT_OBJS)
+		-rm -f $(IMPORT_OBJS) $(BACKUP_OBJS) $(RESTORE_OBJS)
+		-rm -f $(MADESRCS) y.tab.[ch]
+
+distclean:	clean
+		-rm -f Makefile tags core a.out
+
+### Do NOT edit this or the following lines.
+backup.o:	util.h
+dbdview.o:	ddlp.h
+ddl.o:		ddlp.h ddlpsym.h ddlpglob.h
+ddlp.o:		ddlp.h ddlpsym.h ddlpglob.h ddl.h
+ddlplex.o:	ddlp.h ddl.h ddlpsym.h ddlpglob.h lex.h lex.c
+ddlpsym.o:	ddlp.h ddlpsym.h ddlpglob.h
+exp.o:		export.h
+export.o:	export.h
+exportlx.o:	ddlp.h exp.h ddlpsym.h ddlpglob.h lex.h lex.c
+expspec.o:	export.h
+imp.o:		import.h
+import.o:	import.h
+importlx.o:	ddlp.h imp.h ddlpsym.h ddlpglob.h lex.h lex.c
+impspec.o:	import.h
+restore.o:	util.h

@@ -1,0 +1,51 @@
+SRC_OBJS		= ..\src\readdbd.obj ..\src\os.obj
+DDLP_OBJS		= ddl.obj ddlp.obj ddlplex.obj ddlpsym.obj
+DBDVIEW_OBJS	= dbdview.obj
+TYIMPORT_OBJS 	= imp.obj import.obj impspec.obj importlx.obj
+TYEXPORT_OBJS 	= exp.obj export.obj expspec.obj exportlx.obj
+DDLP			= ddlp.exe
+DBDVIEW			= dbdview.exe
+TYIMPORT 		= tyimport.exe
+TYEXPORT 		= tyexport.exe
+LIBS			= ..\src\typhoon.lib
+CFLAGS 			= /DOS2 /I..\include /I..\src
+YACC			= bison -d -y
+CC				= icc /OS2 /Tdc /Sp1 /Q /Tx /Fi /Si /Gh /Ti /Gm /Gd /G4 /Tm \
+				  /Tl1 $(CFLAGS)
+
+all: $(DDLP) $(DBDVIEW) $(TYIMPORT) $(TYEXPORT)
+
+clean:
+	del ddl.c ddl.h exp.c exp.h imp.c imp.h *.obj *.exe y_tab.*
+
+$(DDLP): $(DDLP_OBJS)
+	$(CC) /Fe"ddlp.exe" $(DDLP_OBJS) $(LIBS)
+
+$(DBDVIEW): $(DBDVIEW_OBJS)
+	$(CC) $(DBDVIEW_OBJS) $(LIBS)
+
+$(TYIMPORT): $(TYIMPORT_OBJS)
+	$(CC) /Fe"tyimport.exe" $(TYIMPORT_OBJS) $(SRC_OBJS) $(LIBS)
+
+$(TYEXPORT): $(TYEXPORT_OBJS)
+	$(CC) /Fe"tyexport.exe" $(TYEXPORT_OBJS) $(SRC_OBJS) $(LIBS)
+
+ddl.c: ddl.y
+	$(YACC) ddl.y
+	ren y_tab.c ddl.c
+	ren y_tab.h ddl.h
+
+exp.c: exp.y
+	$(YACC) exp.y
+	ren y_tab.c exp.c
+	ren y_tab.h exp.h
+
+imp.c: imp.y
+	$(YACC) imp.y
+	ren y_tab.c imp.c
+	ren y_tab.h imp.h
+
+.c.obj:
+	$(CC) -c $<
+
+# end-of-file

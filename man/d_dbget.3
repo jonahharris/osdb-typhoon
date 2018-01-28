@@ -1,0 +1,60 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_dbget.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_DBGET 1 \*(Dt TYPHOON
+.SH NAME
+d_dbget \- get the id of the current database
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_dbget()
+.SH DESCRIPTION
+When a database is opened it is assigned an internal id which it retains
+until it is closed. \fBd_dbget\fP gets the id of the current database.
+This id can be used in \fBd_dbset(1)\fP to make another open database the
+current database.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+Operation successful.
+.TP
+.B S_NOCD
+There is no current database.
+.SH CURRENCY CHANGES
+None.
+.SH EXAMPLE
+#include <typhoon.h>
+.br
+
+int cust_dbid;
+.br
+
+d_open("customer", "s");
+.br
+d_dbget(&cust_dbid);
+.br
+\|.\|.\|.
+.br
+d_open(....);
+.br
+\|.\|.\|.
+.br
+/* Make the customer database the current database */
+.br
+d_dbset(cust_dbid);
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_dbset(1)
+

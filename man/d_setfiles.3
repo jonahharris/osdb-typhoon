@@ -1,0 +1,40 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_setfiles.3,v 1.1.1.1 1999/09/30 04:45:51 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_SETFILES 1 \*(Dt TYPHOON
+.SH NAME
+d_setfiles \- set the maximum number of open files
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_setfiles(int \fPmaxfiles\fB)
+.SH DESCRIPTION
+\fBd_setfiles\fP sets the maximum number of files that typhoon may have
+open at the same time. If the current number of open files exceeds
+\fImaxfiles\fP,
+Typhoon closes the least recently used files.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+Operation successful.
+.TP
+.B S_INVPARM
+The parameter is invalid.
+.SH CURRENCY CHANGES
+None.
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_open(1)
+

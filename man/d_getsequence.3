@@ -1,0 +1,41 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_getsequence.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_CRGET 1 \*(Dt TYPHOON
+.SH NAME
+d_getsequence \- get the next number in a sequence
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_getsequence(ulong \fPsequenceid\fB, unsigned long *\fPnumber\fB)
+.SH DESCRIPTION
+\fBd_getsequence\fP gets the next number in the sequence specified
+by \fIsequenceid\fP and increments or decrements the sequence. Sequences
+are guaranteed not to be reused.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+Operation successful.
+.TP
+.B S_NOCD
+There is no current database.
+.TP
+.B S_INVSEQ
+Invalid sequence id.
+.SH CURRENCY CHANGES
+Current sequence is increased or descreased by the step specified in the
+ddl-file.
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1995 Thomas B. Pedersen.
+

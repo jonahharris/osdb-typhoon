@@ -1,0 +1,15 @@
+OBJS   		= demo.obj
+CFLAGS		= /DOS2 /I..\include
+CC			= icc /OS2 /Tdc /Sp1 /Q /Tx /Fi /Si /Gh /Ti /Gm /Gd /G4 /Tm \
+			  /Tl1 $(CFLAGS)
+
+demo.exe: demo.h $(OBJS)
+	$(CC) $(OBJS) ..\src\typhoon.lib
+
+demo.h: demo.ddl
+	..\util\ddlp -a1 demo
+
+.c.obj:
+	$(CC) -c $<
+
+# end-of-file

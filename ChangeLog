@@ -1,0 +1,84 @@
+This is Thomas B. Pedersen's original Changelog up to version 1.10.3. The
+CHANGES file summarized changes done by Kaz Kylheku. 
+-------------------------------------------------------------------------------
+Version 1.10.3
+
+    o A calloc() call in ddlp.c had only one argument.
+
+Version 1.10.2
+
+    o d_getsequence() would generate a SIGSEGV if the database was 
+      closed and opened in between calls.
+
+Version 1.10.1
+
+    o Apparently, there was still a problem with variable length records.
+
+Version 1,10
+
+    o After moving global variables to the typhoon structure, foreign keys
+      didn't work properly.
+    o When the number of open files was 0, e.g. after closing a database,
+      an error message 'could not close a file' was printed on the screen.
+    o Added support for sequences.
+    o d_close() was not protected by ty_lock/ty_unlock calls.
+    o btree_close() wrote header which could corrupt the delete chain.
+    o vlr_close() wrote header which could corrupt the delete chain.
+    o ddlp now expands its tables dynamically.
+
+Version 1.09
+
+    o d_fillnew() wrote mostly zeros when writing variable length records
+      that spanned more than one page.
+
+Version 1.08
+
+    o Oops. Forgot to incorporate bug reported by duke@diku.dk. When multiple
+      databases were open, ty_closeafile() would only search the first 
+      database in dbtab. This bug could cause inconsistent indexes.
+
+Version 1.07
+
+    o Fixed a couple of documentation errors.
+    o btree_add() was missing a call to btree_getheader() which could cause
+      indexes to get corrupted. This only happened when multiple processes
+      were doing heavy insert/delete operations on the same index.
+    o Many have requested that man pages be moved to section 3. This has now
+      been done.
+
+Version 1.06
+
+    o Added ASCII manual.
+    o In a variable length record table with foreign keys, the last few bytes
+      of each record would be lost.
+
+Version 1.05
+
+    o Added OS/2 makefiles.
+
+Version 1.04
+
+    o Minor modifications to configure script.
+    o typhoon.h no longer requires inclusion of sys/types.h.
+    o Corrected syntax error in RISC alignment code.
+
+Version 1.03
+
+    o Added configure script.
+    o Torsten Liermann reported a memory access error found with purify. The
+      error only occurred when closing a database, so it rarely occurred.
+    o The demonstration program in ./examples forgot to set the length
+      determinator of product.description.
+    o Support for platforms with sizeof(long)=8, e.g. Alpha.
+    o Tricky construct in sym_addmember() made calloc() return NULL on
+      some platforms.
+
+Version 1.02
+
+    o New makefiles by George Sipe should fix a lot of conflicts on platforms
+      I haven't been able to compile the code on.
+
+Version 1.01
+
+    o Just after releasing version 1.0 I was informed about two missing 
+      include files. Stupid mistake which has now been fixed.

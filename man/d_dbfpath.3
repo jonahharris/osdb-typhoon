@@ -1,0 +1,40 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_dbfpath.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_DBFPATH 1 \*(Dt TYPHOON
+.SH NAME
+d_dbfpath \- set the path of the database files
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_dbfpath(char *\fPpath\fB)
+.SH DESCRIPTION
+\fBd_dbdpath\fP sets the path of the database files. This 
+function should be called prior to calling \fBd_open(1)\fP as it
+determines where database files are stored. \fIpath\fP
+can be either a relative or an absolute path name. The validity of
+\fIpath\fP is not checked until \fBd_open(1)\fP is called.
+
+Setting the dbd-path does not affect previously opened databases.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+This value is always returned.
+.SH CURRENCY CHANGES
+None.
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_dbdpath(1), d_open(1).
+

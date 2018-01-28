@@ -1,0 +1,65 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_fillnew.3,v 1.1.1.1 1999/09/30 04:45:50 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_FILLNEW 1 \*(Dt TYPHOON
+.SH NAME
+d_fillnew \- insert a new record
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_fillnew(ulong \fPrecid\fB, void *\fPbuf\fB)
+.SH DESCRIPTION
+\fBd_fillnew\fP inserts a new record in a table. \fIrecid\fP specifies the
+type of the record stored in \fIbuf\fP. The inserted record retains the 
+same database address throughout its life in the database.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+The record was successfully inserted.
+.TP
+.B S_NOCD
+There is no current database.
+.TP
+.B S_INVREC
+The record id is not valid.
+.TP
+.B S_DUPLICATE
+One of the keys in the record would cause duplicates in a unique index.
+\fIdb_subcode\fP contains the id of the conflicting field or key.
+.TP
+.B S_RECSIZE
+A length determinator of a variable length field contained a illegal 
+value. \fIdb_subcode\fP contains the id of the conflicting field.
+.TP
+.B S_FOREIGN
+The target of a foreign key could not be found. \fIdb_subcode\fP contains
+the id of the target table.
+.SH CURRENCY CHANGES
+If \fBd_fillnew\fP returned \fBS_OKAY\fP the record becomes the current record.
+.SH EXAMPLE
+#include <typhoon.h>
+
+struct customer cust;
+.br
+strcpy(cust.name, "Pedersen");
+.br
+cust.account = 10002;
+if( d_fillnew(CUSTOMER, &cust) != S_OKAY )
+.br
+	/* handle error */
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_recwrite(1)
+

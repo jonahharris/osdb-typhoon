@@ -1,0 +1,68 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: d_recfrst.3,v 1.1.1.1 1999/09/30 04:45:51 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH D_RECFRST 1 \*(Dt TYPHOON
+.SH NAME
+d_recfrst \- find the first record in a table
+.SH SYNOPSIS
+.B #include <typhoon.h>
+.br
+
+\fBd_recfrst(ulong \fPrecid\fB)
+.SH DESCRIPTION
+\fBd_recfrst\fP finds the first record in the table specified by 
+\fIrecid\fP. If \fBd_recfrst\fP returns \fBS_NOTFOUND\fP the table 
+is empty.
+.SH DIAGNOSTICS
+The status code returned by the function is also stored in the global
+variable \fIdb_status\fP.
+.TP
+.B S_OKAY
+A record was found.
+.TP
+.B S_NOTFOUND
+The key value was not found, i.e. the index is empty.
+.TP
+.B S_NOCD
+There is no current database.
+.TP
+.B S_INVREC
+The id is not a record id.
+.SH CURRENCY CHANGES
+If \fBS_OKAY\fP is returned, the record found becomes the current record.
+.SH EXAMPLE
+/* Traverse the customers in randomorder */
+
+#include <typhoon.h>
+.br
+
+d_recfrst(CUSTOMER);
+.br
+
+while( db_status == S_OKAY )
+.br
+{
+.br
+	struct customer cust;
+.br
+
+	d_recread(&cust);
+.br
+	printf("%s\\n", cust.name);
+.br
+	d_recnext(CUSTOMER);
+.br
+}
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
+d_reclast(1), d_recnext(1), d_recprev(1), d_recread(1).
+

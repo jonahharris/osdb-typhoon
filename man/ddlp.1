@@ -1,0 +1,146 @@
+.de Id
+.ds Rv \\$3
+.ds Dt \\$4
+.ds iD \\$3 \\$4 \\$5 \\$6 \\$7
+..
+.Id $Id: ddlp.1,v 1.1.1.1 1999/09/30 04:45:51 kaz Exp $
+.ds r \s-1TYPHOON\s0
+.if n .ds - \%--
+.if t .ds - \(em
+.TH DDLP 1 \*(Dt TYPHOON
+.SH NAME
+ddlp \- Data Definition Language Processor
+.SH SYNOPSIS
+\fBddlp \fP[\fB-a\fP[1|2|4]] [\fB-f\fP] [\fB-h\fP<file>] file
+.SH DESCRIPTION
+\fBddlp\fP processes a ddl-file and generates a dbd-file and a header file
+with structures and ids for records, fields and keys.
+.br
+
+The \fB-a\fP option sets the structure alignment which must match
+the one used by the C compiler. Specifying the \fB-f\fP
+options causes \fBddlp\fP to only generate constants for those fields
+that are keys. The \fB-h\fP option overrides the default header file name
+by the one specified by the user.
+.br
+.SH DATA DEFINITION LANGUAGE GRAMMER
+.TP
+database
+-> "database" name "{" decl {decl} "}"
+.TP
+decl
+-> "data" "file" "[" pagesize "]" name "contains"
+.br
+   name ";"
+.br
+|  "key"  "file" "[" pagesize "]" name "contains"
+.br
+   name "." name
+";"
+.br
+|  "define" name expr
+.br
+|  "sequence" name int [sortorder] "by" int ';'
+.br
+|  "record" name "{" field {field} [key_decls] "}"
+.br
+.TP
+key_decls
+-> primary_key {alternate_key} {foreign_key}
+.TP
+primary_key
+-> "primary" "key" name key_def ";"
+.TP
+alternate_key
+-> "alternate" ["optional"] ["unique"] "key" name
+.br
+    key_def
+";"
+.TP
+foreign_key
+-> "foreign" ["optional"] foreign_keydef name
+.br
+   "references" name ";"
+.TP
+foreign_keydef
+-> name
+|  name "{" name { "," name } "}"
+.TP
+key_def
+-> "{" key_field { "," key_field } "}"
+.br
+   "on" "update" action
+.br
+   "on" "delete" action ";"
+.TP
+key_field
+-> name [sortorder]
+.TP
+sortorder
+-> "asc" | "desc"
+.TP
+action
+-> "restrict" | "cascade"
+.TP
+pagesize
+-> "[" int "]"
+.TP
+field
+-> type name [dimension] ";"
+.TP
+dimension
+-> array {array} [ "variable" "by" name ]
+.TP
+array
+-> "[" integer "]"
+.TP
+type
+-> int_type
+.br
+|  "signed" int_type
+.br
+|  "unsigned" int_type
+.br
+|  float_type
+.br
+|  struct_type
+.TP
+int_type
+-> "char"
+.br
+|  "int"
+.br
+|  "long"
+.TP
+float_type
+-> "float"
+.br
+|  "double"
+.TP
+struct_type
+-> struct_head [name] "{" field {field} "}" name
+.br
+   [dimension]
+.TP
+struct_head
+-> "struct"
+.br
+|  "union"
+.TP
+expr
+-> expr "+" expr
+.br
+|  expr "-" expr
+.br
+|  expr "/" expr
+.br
+|  expr "*" expr
+.br
+|  "(" expr ")"
+.br
+|  integer
+.SH IDENTIFICATION
+Author: Thomas B. Pedersen.
+.br
+Copyright (c) 1994 Thomas B. Pedersen.
+.SH "SEE ALSO"
