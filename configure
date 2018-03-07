@@ -15,7 +15,15 @@ echo Checking for gcc
 # typhoon uses a mixture of POSIX, BSD and System V interfaces
 #
 
-STANDARDS="-D_POSIX_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE"
+OS=$(uname -s)
+case $OS in
+  'Darwin') 
+    STANDARDS="-D_BSD_SOURCE -D_SVID_SOURCE"
+    ;;
+  *)
+    STANDARDS="-D_POSIX_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE"
+    ;;
+esac
 
 if type gcc >/dev/null 2>/dev/null ; then
 	CC=gcc
